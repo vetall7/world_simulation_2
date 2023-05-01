@@ -17,8 +17,8 @@ public class Plant extends Organism {
 
     protected Plant(){}
     @Override
-    public void Collision(){}
+    public void Collision(Organism victim, int x , int y){}
 
     @Override
-    public void Action() {}
+    public void Action(int range) {}
 }
