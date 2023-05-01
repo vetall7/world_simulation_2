@@ -9,6 +9,16 @@ public abstract class  Organism {
     protected int x, y;
     protected World world;
     public Organism(){};
+    public int GetX(){
+        return x;
+    }
+    public int GetY(){
+        return y;
+    }
+    public char GetSign(){
+        return sign;
+    }
+
     public abstract void Action();
     public abstract void Collision();
 }
