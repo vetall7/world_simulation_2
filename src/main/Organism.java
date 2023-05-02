@@ -33,6 +33,22 @@ public abstract class  Organism {
     public String GetName(){
         return name;
     }
+    public void PowerIncrease(int p){
+        power += p;
+    }
+    public void SetX(int x){
+        this.x = x;
+    }
+    public void SetY(int y){
+        this.y = y;
+    }
+    public int GetXpriv(){
+        return x_priv;
+    }
+    public int GetYpriv(){
+        return y_priv;
+    }
+    public boolean DidDeflectedAttack(Organism attacker){return false;}
     public abstract void Action(int range);
     public abstract void Collision(Organism victim, int x, int y);
 }

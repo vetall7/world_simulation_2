@@ -1,5 +1,6 @@
 package Animals;
 
+import Plants.Plant;
 import main.Organism;
 import main.World;
 
@@ -72,14 +73,17 @@ public class Animal extends Organism {
         }
 
         if (world.GetPoint(x,y) != null){
-            Collision(world.GetPoint(x,y), x, y);
+            if (IsRunAway() == true){
+              return;
+            }
+            Collision(world.GetPoint(x, y), x, y);
         }
         else {
             this.x = x;
             this.y = y;
             world.SetPoint(y_priv,x_priv, null);
             world.SetPoint(this.y,this.x, this);
-            world.AddComments(this.GetName() + " moved ");
+            world.AddComments(this.GetName() + " moved form [" + x_priv + ";" + y_priv + "]" + " to [" + x + ";" + y + "]");
         }
     }
 
@@ -95,15 +99,21 @@ public class Animal extends Organism {
                 world.AddOrganism(temp);
             }
         }
-        else if (this.GetPower() > victim.GetPower()){
-            world.AddComments(this.GetName() + "killed" + victim.GetName());
+       else if (this.GetPower() > victim.GetPower()){
+           if (victim.DidDeflectedAttack(this)){
+               return;
+           }
+           world.AddComments(this.GetName() + " killed " + victim.GetName());
             this.x = x;
             this.y = y;
             world.SetPoint(y_priv, x_priv, null);
             world.SetPoint(y, x, this);
+            if (victim instanceof Plant){
+                victim.Collision(this, x, y);
+            }
             world.DeleteOrg(victim);
-        }else if (this.GetPower() < victim.GetPower()){
-            world.AddComments(victim.GetName() + "killed" + this.GetName());
+        }else if (this.GetPower() <= victim.GetPower()){
+            world.AddComments(victim.GetName() + " killed " + this.GetName());
             world.SetPoint(y_priv, x_priv, null);
             world.DeleteOrg(this);
         }
@@ -149,4 +159,6 @@ public class Animal extends Organism {
         }
         return null;
     }
+
+    public boolean IsRunAway(){return false;}
 }

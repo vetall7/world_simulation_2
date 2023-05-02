@@ -34,6 +34,12 @@ public class WorldGenerator {
             counter += 9;
         }
 
+        CoordinateGenerate(x, y, ocupied);
+        Human human = new Human(x[0], y[0], world);
+        world.AddOrganism(human);
+        world.SetHuman(human);
+        human.SetDirection(world.TURN_NONE);
+
         for (int i = 0; i < counter/20; i++){
 
             CoordinateGenerate(x, y, ocupied);
