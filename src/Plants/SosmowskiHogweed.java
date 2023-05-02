@@ -26,8 +26,8 @@ public class SosmowskiHogweed extends Plant{
                 if (y + i >= 0 && y + i < world.GetHeight() && x + j >= 0 && x +j < world.GetWidth()
                 && world.GetPoint(x + j, y + i) != null && world.GetPoint(x + j, y + i) instanceof Animal){
                     world.AddComments("SosmowskiHogweed killed " +  world.GetPoint(x + j, y + i).GetName());
-                    //world.DeleteOrg(world.GetPoint(x + j, y + i));
-                    //world.SetPoint(y + i, x + j, null);
+                    world.DeleteOrg(world.GetPoint(x + j, y + i));
+                    world.SetPoint(y + i, x + j, null);
                 }
             }
         }

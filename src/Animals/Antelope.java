@@ -18,7 +18,6 @@ public class Antelope extends  Animal{
     public boolean IsRunAway(){
         Random random = new Random();
         int rand = random.nextInt(10);
-        System.out.println(rand);
         if (rand < 5){
             if (x - 2 > 0 && world.GetPoint(x-2, y) == null){
                     world.SetPoint(y, x, null);

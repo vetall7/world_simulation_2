@@ -1,6 +1,8 @@
 package main;
 
+import Animals.Animal;
 import Animals.Human;
+import Plants.Plant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,9 +72,29 @@ public class World {
     private void drawSquare(Graphics g, int row, int col, int size) {
         int x = col * size;
         int y = row * size;
-        g.setColor(Color.WHITE);
+        if (GetPoint(col, row) instanceof Human) {
+            g.setColor(Color.YELLOW);
+        }
+        else if (GetPoint(col, row) instanceof Plant){
+            g.setColor(Color.GREEN);
+        }else if (GetPoint(col, row) instanceof Animal){
+            g.setColor(Color.BLUE);
+        }
+        else {
+            g.setColor(Color.WHITE);
+        }
         g.drawRect(x, y, size, size);
-        g.setColor(Color.BLACK);
+        if (GetPoint(col, row) instanceof Human) {
+            g.setColor(Color.YELLOW);
+        }
+        else if (GetPoint(col, row) instanceof Plant){
+            g.setColor(Color.GREEN);
+        }else if (GetPoint(col, row) instanceof Animal){
+            g.setColor(Color.BLUE);
+        }
+        else {
+            g.setColor(Color.BLACK);
+        }
         g.fillRect(x + 1, y + 1, size - 1, size - 1);
         g.setColor(Color.WHITE);
         if (board[row][col] != null) {
@@ -109,8 +131,6 @@ public class World {
         frame.add(scrollPane, BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
-
-        // System.out.println(organisms.size());
     }
 
     public void Turn(int direction ){
