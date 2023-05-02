@@ -1,8 +1,10 @@
 package main;
 
 import Animals.Animal;
+import Animals.Antelope;
 import Animals.Human;
 import Plants.Plant;
+import Plants.SosmowskiHogweed;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,17 +74,7 @@ public class World {
     private void drawSquare(Graphics g, int row, int col, int size) {
         int x = col * size;
         int y = row * size;
-        if (GetPoint(col, row) instanceof Human) {
-            g.setColor(Color.YELLOW);
-        }
-        else if (GetPoint(col, row) instanceof Plant){
-            g.setColor(Color.GREEN);
-        }else if (GetPoint(col, row) instanceof Animal){
-            g.setColor(Color.BLUE);
-        }
-        else {
-            g.setColor(Color.WHITE);
-        }
+        g.setColor(Color.WHITE);
         g.drawRect(x, y, size, size);
         if (GetPoint(col, row) instanceof Human) {
             g.setColor(Color.YELLOW);
@@ -95,40 +87,65 @@ public class World {
         else {
             g.setColor(Color.BLACK);
         }
+        if (GetPoint(col, row) instanceof SosmowskiHogweed){
+            g.setColor(Color.RED);
+        }
         g.fillRect(x + 1, y + 1, size - 1, size - 1);
         g.setColor(Color.WHITE);
         if (board[row][col] != null) {
             g.drawString(new String(String.valueOf(board[row][col].GetSign())), x + size / 2 - 5, y + size / 2 + 5);
         }
+
     }
     public void DrawWorld(JFrame frame){
         JPanel boardPanel = new JPanel() {
-            @Override
-            public void paintComponent(Graphics g) {
-                super.paintComponent(g);
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
 
-                int cellSize = 50; // Размер одной клетки на доске
-                int boardWidth = width * cellSize + 15;
-                int boardHeight = height * cellSize + 400;
-                frame.setSize(boardWidth,boardHeight);
-                // Рисуем доску
-                for (int row = 0; row < height; row++) {
-                    for (int col = 0; col < width; col++) {
-                        drawSquare(g, row, col, cellSize);
-                    }
+            int cellSize = 50; // Размер одной клетки на доске
+            int boardWidth = width * cellSize + 15;
+            int boardHeight = height * cellSize + 400;
+            frame.setSize(boardWidth,boardHeight);
+            // Рисуем доску
+            for (int row = 0; row < height; row++) {
+                for (int col = 0; col < width; col++) {
+                    drawSquare(g, row, col, cellSize);
                 }
-                setPreferredSize(new Dimension(boardWidth, boardHeight));
             }
-        };
+            setPreferredSize(new Dimension(boardWidth, boardHeight));
+        }
+    };
+
+        GridBagLayout layout = new GridBagLayout();
+        boardPanel.setLayout(layout);
+
+        JLabel label = new JLabel("Organisms counting: " + GetOrgCounter() );
+        label.setPreferredSize(new Dimension(300, label.getPreferredSize().height));
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0; // column 0
+        constraints.gridy = GridBagConstraints.RELATIVE; // next available row
+        constraints.insets = new Insets(height*50 - 180, 0, 0, 350); // bottom padding of 200 pixels
+        boardPanel.add(label, constraints);
+
+        JLabel label2 = new JLabel("YELLOW - HUMAN " + GetOrgCounter() );
+        label.setPreferredSize(new Dimension(300, label.getPreferredSize().height));
+        GridBagConstraints constraints2 = new GridBagConstraints();
+        constraints.gridx = 0; // column 0
+        constraints.gridy = GridBagConstraints.RELATIVE; // next available row
+        constraints.insets = new Insets(height*50 - 100, 0, 0, 350); // bottom padding of 200 pixels
+        boardPanel.add(label2, constraints2);
+
+
+
         JList<String> list = new JList<>(comments);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollPane = new JScrollPane(list);
-        scrollPane.setPreferredSize(new Dimension(0, 300));
-
+        scrollPane.setPreferredSize(new Dimension(0, 150));
 
         frame.getContentPane().removeAll();
+        frame.getContentPane().add(scrollPane, BorderLayout.SOUTH);
         frame.getContentPane().add(boardPanel);
-        frame.add(scrollPane, BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
     }
