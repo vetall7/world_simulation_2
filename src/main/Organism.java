@@ -48,6 +48,16 @@ public abstract class  Organism {
     public int GetYpriv(){
         return y_priv;
     }
+    public void SetXpriv(int x_priv){
+        this.x_priv = x_priv;
+    }
+    public void SetYpriv(int y_priv){
+        this.y_priv = y_priv;
+    }
+    public void SetPower(int power){
+        this.power = power;
+    }
+    public boolean TarczeAlzura(Organism attacker){return false;}
     public boolean DidDeflectedAttack(Organism attacker){return false;}
     public abstract void Action(int range);
     public abstract void Collision(Organism victim, int x, int y);

@@ -73,6 +73,9 @@ public class Animal extends Organism {
         }
 
         if (world.GetPoint(x,y) != null){
+            if (world.GetPoint(x, y).TarczeAlzura(this)){  // trzeba zeby zwierze zaatakowalo czlowieka
+                return;
+            }
             if (IsRunAway() == true){
               return;
             }

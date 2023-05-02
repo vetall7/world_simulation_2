@@ -11,7 +11,7 @@ public class Human extends Animal{
     private int turn_counter;
     private int direction;
     public Human(int x, int y, World world){
-        super(x, y, world, 'x', "Human", 5, 4);
+        super(x, y, world, 'x', "Human", 5, 6);
         isSuperPower = false;
         turn_counter = -10;
     }
@@ -22,12 +22,17 @@ public class Human extends Animal{
         this.direction = direction;
     }
 
+    public int GetTurn(){
+        return turn_counter;
+    }
+
     public void SetSuperPower(boolean is){
         isSuperPower = is;
     }
     public void SetTurn(int turn_counter){
         this.turn_counter = turn_counter;
     }
+    @Override
     public boolean TarczeAlzura(Organism attacker){
         if (!isSuperPower){
             return false;
@@ -55,18 +60,44 @@ public class Human extends Animal{
         int y_tmp = this.y;
         x_priv = x;
         y_priv = y;
-        if (direction == world.TURN_UP && this.y + 1 < world.GetHeight()){
+        if (direction == world.TURN_DOWN && this.y + 1 < world.GetHeight()){
             y_tmp++;
         }
-        if (direction == world.TURN_DOWN && this.y - 1 >= 0){
+        if (direction == world.TURN_UP && this.y - 1 >= 0){
             y_tmp--;
         }
         if (direction == world.TURN_LEFT && this.x - 1 >= 0){
             x_tmp--;
         }
         if (direction == world.TURN_RIGHT && this.x + 1 < world.GetWidth()){
-            x++;
+            x_tmp++;
         }
-
+        if (direction == world.TURN_SUPER){
+            if (world.GetTurn() <= turn_counter + 10){
+                world.AddComments("SUPERPOWER CANNOT BE ACTIVATED");
+            }
+            else {
+                turn_counter = world.GetTurn();
+                world.AddComments("ACTIVATED SUPERPOWER");
+                isSuperPower = true;
+            }
+        }
+        if (isSuperPower){
+            if (world.GetTurn() == turn_counter + 5){
+                isSuperPower = false;
+                world.AddComments("SUPERPOWER DEACTIVATED");
+            }
+        }
+        if (world.GetPoint(x_tmp, y_tmp) != null){
+            this.Collision(world.GetPoint(x_tmp, y_tmp), x_tmp, y_tmp);
+        }
+        else
+        {
+            this.x = x_tmp;
+            this.y = y_tmp;
+            world.SetPoint(y_priv, x_priv, null);
+            world.SetPoint(y, x, this);
+            world.AddComments(this.GetName() + " moved form [" + x_priv + ";" + y_priv + "]" + " to [" + x + ";" + y + "]");
+        }
     }
 }

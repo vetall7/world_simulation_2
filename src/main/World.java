@@ -19,6 +19,9 @@ public class World {
     public static final int TURN_LEFT = 3;
     public static final int TURN_RIGHT = 4;
     public static final int TURN_SUPER = 5;
+    public int GetTurn(){
+        return turn;
+    }
     public void SetHuman(Human human) {
         this.human = human;
     }
@@ -40,6 +43,16 @@ public class World {
     }
     public int GetWidth(){
         return width;
+    }
+    public int GetOrgCounter(){
+        return organisms.size();
+    }
+
+    public Vector<Organism> getOrganisms() {
+        return organisms;
+    }
+    public void SetTurn(int turn){
+        this.turn = turn;
     }
     public int GetHeight(){
         return height;

@@ -24,22 +24,25 @@ public class Main {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
 
-        JTextField heightField = new JTextField(10);
-        JTextField widthField = new JTextField(10);
-
-        JButton button = new JButton("OK");
-        button.addActionListener(new ActionListener() {
+        JButton newGameButton = new JButton("New Game");
+        newGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                width = Integer.parseInt(widthField.getText());
-                height = Integer.parseInt(heightField.getText());
+                height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
+                width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
                 generateWorld(frame);
             }
         });
+        panel.add(newGameButton);
 
-        panel.add(heightField);
-        panel.add(widthField);
-        panel.add(button);
+        JButton loadGameButton = new JButton("Load Game");
+        loadGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ReadGame(frame);
+            }
+        });
+        panel.add(loadGameButton);
 
         frame.add(panel);
         frame.setVisible(true);
@@ -72,6 +75,53 @@ public class Main {
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     world.Turn(world.TURN_RIGHT);
                     world.DrawWorld(frame);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    world.Turn(world.TURN_SUPER);
+                    world.DrawWorld(frame);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_S) {
+                    generator.SaveGame();
+                }
+            }
+        });
+    }
+
+    private static void ReadGame(JFrame frame){
+        WorldGenerator generator = new WorldGenerator();
+        generator.ReadGame();
+        World world = generator.GetWorld();
+        world.DrawWorld(frame);
+        frame.requestFocusInWindow();
+        frame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    world.Turn(world.TURN_NONE);
+                    world.DrawWorld(frame);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    world.Turn(world.TURN_UP);
+                    world.DrawWorld(frame);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    world.Turn(world.TURN_DOWN);
+                    world.DrawWorld(frame);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    world.Turn(world.TURN_LEFT);
+                    world.DrawWorld(frame);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    world.Turn(world.TURN_RIGHT);
+                    world.DrawWorld(frame);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    world.Turn(world.TURN_SUPER);
+                    world.DrawWorld(frame);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_S) {
+                    generator.SaveGame();
                 }
             }
         });
