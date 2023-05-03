@@ -19,10 +19,19 @@ public class Main {
     private static void showInputDialog() {
         JFrame frame = new JFrame("Vitalii Shapovalov 196633");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 450);
+        frame.setSize(400, 400);
         frame.requestFocusInWindow();
         JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        panel.setBackground(Color.BLACK);
+        panel.setLayout(new BorderLayout());
+        UIManager.put("Button.background", Color.BLACK);
+        UIManager.put("Button.foreground", Color.WHITE);
+        JLabel label = new JLabel("The World Simulation Game!");
+        Font font = new Font("Arial", Font.ITALIC, 27);
+        label.setFont(font);
+        label.setForeground(Color.BLUE);
+        label.setHorizontalAlignment(JLabel.CENTER); // Center-align the label
+        panel.add(label, BorderLayout.CENTER);
 
         JButton newGameButton = new JButton("New Game");
         newGameButton.addActionListener(new ActionListener() {
@@ -33,7 +42,6 @@ public class Main {
                 generateWorld(frame);
             }
         });
-        panel.add(newGameButton);
 
         JButton loadGameButton = new JButton("Load Game");
         loadGameButton.addActionListener(new ActionListener() {
@@ -42,10 +50,23 @@ public class Main {
                 ReadGame(frame);
             }
         });
-        panel.add(loadGameButton);
+
+// Create two smaller panels and add each button to one of them
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(newGameButton, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.add(loadGameButton, BorderLayout.CENTER);
+
+// Add the two smaller panels to the main panel, positioning them at the top and bottom respectively
+        panel.add(topPanel, BorderLayout.NORTH);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
 
         frame.add(panel);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
     private static void generateWorld(JFrame frame) {
         World world = new World(height, width);
@@ -82,6 +103,9 @@ public class Main {
                 }
                 if (e.getKeyCode() == KeyEvent.VK_S) {
                     generator.SaveGame();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_P) {
+                    JOptionPane.showMessageDialog(frame, "a - Antelope\nf - Fox\ns - Sheep\nt - Turtle\nw - Wolf\nb - Belladonna\nd - Dandelion\nG - Grass\ng - Guarana\nh - SosmowskiHogweed");
                 }
             }
         });
@@ -122,6 +146,9 @@ public class Main {
                 }
                 if (e.getKeyCode() == KeyEvent.VK_S) {
                     generator.SaveGame();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_P) {
+                    JOptionPane.showMessageDialog(frame, "a - Antelope\nf - Fox\ns - Sheep\nt - Turtle\nw - Wolf\nb - Belladonna\nd - Dandelion\nG - Grass\ng - Guarana\nh - SosmowskiHogweed");
                 }
             }
         });

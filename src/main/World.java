@@ -8,6 +8,8 @@ import Plants.SosmowskiHogweed;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
@@ -103,40 +105,43 @@ public class World {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            int cellSize = 50; // Размер одной клетки на доске
+            int cellSize = 50;
             int boardWidth = width * cellSize + 15;
             int boardHeight = height * cellSize + 400;
             frame.setSize(boardWidth,boardHeight);
-            // Рисуем доску
             for (int row = 0; row < height; row++) {
                 for (int col = 0; col < width; col++) {
                     drawSquare(g, row, col, cellSize);
                 }
             }
             setPreferredSize(new Dimension(boardWidth, boardHeight));
+            g.setColor(Color.BLACK);
+            Font font = g.getFont().deriveFont(15f);
+            Font font2 = g.getFont().deriveFont(18f);
+            g.setFont(font2);
+            int position = height*52;
+            g.drawString(new String("Organisms counter: " + organisms.size() + "     Turn counter: " + turn), 0, position );
+            g.setColor(Color.RED);
+            g.setFont(font);
+            g.drawString(new String("Yellow - HUMAN "), 0, position + 20 );
+            g.setColor(Color.GREEN);
+            g.drawString(new String("Green  - PLANTS "), 0, position + 40 );
+            g.setColor(Color.BLUE);
+            g.drawString(new String("Blue   - ANIMALS "), 0, position + 60 );
+            g.setColor(Color.BLACK);
+            g.drawString(new String("PRESS S TO SAVE THE GAME "), 0, position + 85 );
+            g.drawString(new String("ARROWS - HUMAN MOVEMENT "), 0, position + 100 );
+            if (human.GetSuperPower()){
+                g.setColor(Color.RED);
+                g.drawString(new String("ACTIVATED"), 180, position + 115 );
+            }
+            g.setFont(font);
+            g.setColor(Color.BLACK);
+            g.drawString(new String("ENTER - SUPERPOWER "), 0, position + 115);
+            g.setColor(Color.RED);
+            g.drawString(new String("PRESS P TO SEE THE PROMPTS"), 0, position + 130);
         }
     };
-
-        GridBagLayout layout = new GridBagLayout();
-        boardPanel.setLayout(layout);
-
-        JLabel label = new JLabel("Organisms counting: " + GetOrgCounter() );
-        label.setPreferredSize(new Dimension(300, label.getPreferredSize().height));
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = 0; // column 0
-        constraints.gridy = GridBagConstraints.RELATIVE; // next available row
-        constraints.insets = new Insets(height*50 - 180, 0, 0, 350); // bottom padding of 200 pixels
-        boardPanel.add(label, constraints);
-
-        JLabel label2 = new JLabel("YELLOW - HUMAN " + GetOrgCounter() );
-        label.setPreferredSize(new Dimension(300, label.getPreferredSize().height));
-        GridBagConstraints constraints2 = new GridBagConstraints();
-        constraints.gridx = 0; // column 0
-        constraints.gridy = GridBagConstraints.RELATIVE; // next available row
-        constraints.insets = new Insets(height*50 - 100, 0, 0, 350); // bottom padding of 200 pixels
-        boardPanel.add(label2, constraints2);
-
-
 
         JList<String> list = new JList<>(comments);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
