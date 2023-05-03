@@ -120,8 +120,7 @@ public class WorldGenerator {
                 }
             }
             bw.close();
-
-            System.out.println("Данные записаны в файл " + filename);
+            world.AddComments("The game has been saved");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -179,7 +178,7 @@ public class WorldGenerator {
         }
     }
 
-    private Organism ReadOrganism(String name, int x, int y) {
+    public Organism ReadOrganism(String name, int x, int y) {
         Organism temp_org = null;
         if (name.equals("Wolf")) {
             temp_org = new Wolf(x, y, world);

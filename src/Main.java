@@ -72,34 +72,34 @@ public class Main {
         World world = new World(height, width);
         WorldGenerator generator = new WorldGenerator(world);
         generator.Generate();
-        world.DrawWorld(frame);
+        world.DrawWorld(frame, generator);
         frame.requestFocusInWindow();
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     world.Turn(world.TURN_NONE);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     world.Turn(world.TURN_UP);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     world.Turn(world.TURN_DOWN);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     world.Turn(world.TURN_LEFT);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     world.Turn(world.TURN_RIGHT);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     world.Turn(world.TURN_SUPER);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_S) {
                     generator.SaveGame();
@@ -115,34 +115,34 @@ public class Main {
         WorldGenerator generator = new WorldGenerator();
         generator.ReadGame();
         World world = generator.GetWorld();
-        world.DrawWorld(frame);
+        world.DrawWorld(frame, generator);
         frame.requestFocusInWindow();
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     world.Turn(world.TURN_NONE);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     world.Turn(world.TURN_UP);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     world.Turn(world.TURN_DOWN);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     world.Turn(world.TURN_LEFT);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     world.Turn(world.TURN_RIGHT);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     world.Turn(world.TURN_SUPER);
-                    world.DrawWorld(frame);
+                    world.DrawWorld(frame, generator);
                 }
                 if (e.getKeyCode() == KeyEvent.VK_S) {
                     generator.SaveGame();

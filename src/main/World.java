@@ -101,7 +101,7 @@ public class World {
         }
 
     }
-    public void DrawWorld(JFrame frame){
+    public void DrawWorld(JFrame frame, WorldGenerator generator){
         JPanel boardPanel = new JPanel() {
         @Override
         public void paintComponent(Graphics g) {
@@ -133,7 +133,7 @@ public class World {
             g.setColor(Color.BLACK);
             g.drawString(new String("PRESS S TO SAVE THE GAME "), 0, position + 85 );
             g.drawString(new String("ARROWS - HUMAN MOVEMENT "), 0, position + 100 );
-            if (human.GetSuperPower()){
+            if (human != null && human.GetSuperPower()){
                 g.setColor(Color.RED);
                 g.drawString(new String("ACTIVATED"), 180, position + 115 );
             }
@@ -151,19 +151,44 @@ public class World {
                 int row = e.getY() / 50;
                 int col = e.getX() / 50;
                 Object point = GetPoint(col, row);
-                String message = "";
                 if (point instanceof Human) {
-                    message = "You clicked on a human.";
+                    JOptionPane.showMessageDialog(frame, "You clicked on a human.");
                 } else if (point instanceof Plant) {
-                    message = "You clicked on a plant.";
+                    JOptionPane.showMessageDialog(frame, "You clicked on a plant.");
                 } else if (point instanceof Animal) {
-                    message = "You clicked on an animal.";
-                } else if (point instanceof SosmowskiHogweed) {
-                    message = "You clicked on a Sosmowski Hogweed.";
-                } else {
-                    message = "You clicked on an empty square.";
+                    JOptionPane.showMessageDialog(frame, "You clicked on an animal.");
                 }
-                JOptionPane.showMessageDialog(frame, message);
+                else {
+                    String options[] = {
+                            "Antelope",
+                            "Fox",
+                            "Wolf",
+                            "Turtle",
+                            "Sheep",
+                            "Belladonna",
+                            "Dandelion",
+                            "Grass",
+                            "Guarana",
+                            "SosmowskiHogweed"
+                    };
+                    String Selected = (String) JOptionPane.showInputDialog(
+                            frame,
+                            "Choose an organism:",
+                            "Organism Selection",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+                    if (Selected != null){
+                        Organism new_org = generator.ReadOrganism(Selected, col, row);
+                        if (new_org != null){
+                            AddOrganism(new_org);
+                            DrawWorld(frame, generator);
+                            new_org.SetAge(1);
+                        }
+                    }
+                }
+
             }
         });
 
@@ -182,7 +207,7 @@ public class World {
 
     public void Turn(int direction ){
         turn++;
-        human.SetDirection(direction);
+        if (human != null) {human.SetDirection(direction);}
         comments.clear();
         for (int i = 0; i < organisms.size(); i++){
             if (organisms.get(i).GetAge() == 0){
