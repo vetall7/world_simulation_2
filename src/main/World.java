@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
@@ -140,8 +142,31 @@ public class World {
             g.drawString(new String("ENTER - SUPERPOWER "), 0, position + 115);
             g.setColor(Color.RED);
             g.drawString(new String("PRESS P TO SEE THE PROMPTS"), 0, position + 130);
+
         }
     };
+        boardPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = e.getY() / 50;
+                int col = e.getX() / 50;
+                Object point = GetPoint(col, row);
+                String message = "";
+                if (point instanceof Human) {
+                    message = "You clicked on a human.";
+                } else if (point instanceof Plant) {
+                    message = "You clicked on a plant.";
+                } else if (point instanceof Animal) {
+                    message = "You clicked on an animal.";
+                } else if (point instanceof SosmowskiHogweed) {
+                    message = "You clicked on a Sosmowski Hogweed.";
+                } else {
+                    message = "You clicked on an empty square.";
+                }
+                JOptionPane.showMessageDialog(frame, message);
+            }
+        });
+
 
         JList<String> list = new JList<>(comments);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
