@@ -136,7 +136,7 @@ public class WorldGenerator {
             height = Integer.parseInt(scanner.next());
             width = Integer.parseInt(scanner.next());
             turn = Integer.parseInt(scanner.next());
-            world = new World(height, width);
+            world = new SimpleWorld(height, width);
             world.SetTurn(turn);
             int x_tmp, y_tmp, x_p, y_p, age, power, super_turn;
             int is_super;

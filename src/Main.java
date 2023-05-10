@@ -1,3 +1,5 @@
+import main.HexWorld;
+import main.SimpleWorld;
 import main.World;
 import main.WorldGenerator;
 
@@ -69,7 +71,7 @@ public class Main {
         frame.setLocationRelativeTo(null);
     }
     private static void generateWorld(JFrame frame) {
-        World world = new World(height, width);
+        World world = new HexWorld(height, width);
         WorldGenerator generator = new WorldGenerator(world);
         generator.Generate();
         world.DrawWorld(frame, generator);

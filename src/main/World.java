@@ -15,12 +15,12 @@ import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
-public class World {
-    private int height, width, turn;
-    private Vector<Organism> organisms;
-    private Vector<String> comments;
-    private Organism[][] board;
-    private Human human;
+public abstract class World {
+    protected int height, width, turn;
+    protected Vector<Organism> organisms;
+    protected Vector<String> comments;
+    protected Organism[][] board;
+    protected Human human;
     public static final int TURN_NONE = 0;
     public static final int TURN_UP = 1;
     public static final int TURN_DOWN = 2;
@@ -75,135 +75,10 @@ public class World {
     public Organism GetPoint(int x, int y){
         return board[y][x];
     }
-    private void drawSquare(Graphics g, int row, int col, int size) {
-        int x = col * size;
-        int y = row * size;
-        g.setColor(Color.WHITE);
-        g.drawRect(x, y, size, size);
-        if (GetPoint(col, row) instanceof Human) {
-            g.setColor(Color.YELLOW);
-        }
-        else if (GetPoint(col, row) instanceof Plant){
-            g.setColor(Color.GREEN);
-        }else if (GetPoint(col, row) instanceof Animal){
-            g.setColor(Color.BLUE);
-        }
-        else {
-            g.setColor(Color.BLACK);
-        }
-        if (GetPoint(col, row) instanceof SosmowskiHogweed){
-            g.setColor(Color.RED);
-        }
-        g.fillRect(x + 1, y + 1, size - 1, size - 1);
-        g.setColor(Color.WHITE);
-        if (board[row][col] != null) {
-            g.drawString(new String(String.valueOf(board[row][col].GetSign())), x + size / 2 - 5, y + size / 2 + 5);
-        }
 
-    }
-    public void DrawWorld(JFrame frame, WorldGenerator generator){
-        JPanel boardPanel = new JPanel() {
-        @Override
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
+    protected abstract void drawSquare(Graphics g, int row, int col, int size);
 
-            int cellSize = 50;
-            int boardWidth = width * cellSize + 15;
-            int boardHeight = height * cellSize + 400;
-            frame.setSize(boardWidth,boardHeight);
-            for (int row = 0; row < height; row++) {
-                for (int col = 0; col < width; col++) {
-                    drawSquare(g, row, col, cellSize);
-                }
-            }
-            setPreferredSize(new Dimension(boardWidth, boardHeight));
-            g.setColor(Color.BLACK);
-            Font font = g.getFont().deriveFont(15f);
-            Font font2 = g.getFont().deriveFont(18f);
-            g.setFont(font2);
-            int position = height*52;
-            g.drawString(new String("Organisms counter: " + organisms.size() + "     Turn counter: " + turn), 0, position );
-            g.setColor(Color.RED);
-            g.setFont(font);
-            g.drawString(new String("Yellow - HUMAN "), 0, position + 20 );
-            g.setColor(Color.GREEN);
-            g.drawString(new String("Green  - PLANTS "), 0, position + 40 );
-            g.setColor(Color.BLUE);
-            g.drawString(new String("Blue   - ANIMALS "), 0, position + 60 );
-            g.setColor(Color.BLACK);
-            g.drawString(new String("PRESS S TO SAVE THE GAME "), 0, position + 85 );
-            g.drawString(new String("ARROWS - HUMAN MOVEMENT "), 0, position + 100 );
-            if (human != null && human.GetSuperPower()){
-                g.setColor(Color.RED);
-                g.drawString(new String("ACTIVATED"), 180, position + 115 );
-            }
-            g.setFont(font);
-            g.setColor(Color.BLACK);
-            g.drawString(new String("ENTER - SUPERPOWER "), 0, position + 115);
-            g.setColor(Color.RED);
-            g.drawString(new String("PRESS P TO SEE THE PROMPTS"), 0, position + 130);
-
-        }
-    };
-        boardPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int row = e.getY() / 50;
-                int col = e.getX() / 50;
-                Object point = GetPoint(col, row);
-                if (point instanceof Human) {
-                    JOptionPane.showMessageDialog(frame, "You clicked on a human.");
-                } else if (point instanceof Plant) {
-                    JOptionPane.showMessageDialog(frame, "You clicked on a plant.");
-                } else if (point instanceof Animal) {
-                    JOptionPane.showMessageDialog(frame, "You clicked on an animal.");
-                }
-                else {
-                    String options[] = {
-                            "Antelope",
-                            "Fox",
-                            "Wolf",
-                            "Turtle",
-                            "Sheep",
-                            "Belladonna",
-                            "Dandelion",
-                            "Grass",
-                            "Guarana",
-                            "SosmowskiHogweed"
-                    };
-                    String Selected = (String) JOptionPane.showInputDialog(
-                            frame,
-                            "Choose an organism:",
-                            "Organism Selection",
-                            JOptionPane.PLAIN_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
-                    if (Selected != null){
-                        Organism new_org = generator.ReadOrganism(Selected, col, row);
-                        if (new_org != null){
-                            AddOrganism(new_org);
-                            DrawWorld(frame, generator);
-                            new_org.SetAge(1);
-                        }
-                    }
-                }
-
-            }
-        });
-
-
-        JList<String> list = new JList<>(comments);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane scrollPane = new JScrollPane(list);
-        scrollPane.setPreferredSize(new Dimension(0, 150));
-
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(scrollPane, BorderLayout.SOUTH);
-        frame.getContentPane().add(boardPanel);
-        frame.pack();
-        frame.setVisible(true);
-    }
+    public abstract void DrawWorld(JFrame frame, WorldGenerator generator);
 
     public void Turn(int direction ){
         turn++;

@@ -22,7 +22,6 @@ public class Animal extends Organism {
 
     protected Animal(){}
 
-
     @Override
     public void Action(int range){
         age++;
@@ -86,7 +85,7 @@ public class Animal extends Organism {
             this.y = y;
             world.SetPoint(y_priv,x_priv, null);
             world.SetPoint(this.y,this.x, this);
-            world.AddComments(this.GetName() + " moved form [" + x_priv + ";" + y_priv + "]" + " to [" + x + ";" + y + "]");
+            world.AddComments(this.GetName() + " moved from [" + x_priv + ";" + y_priv + "]" + " to [" + x + ";" + y + "]");
         }
     }
 
