@@ -15,7 +15,7 @@ public class Fox extends Animal{
         x_priv = x;
         y_priv = y;
         Random random = new Random();
-        int rand_num = random.nextInt(4);
+        int rand_num = random.nextInt(world.GetCellNeighboursCounter());
         int x = this.x;
         int y = this.y;
         boolean action = false;
@@ -68,6 +68,26 @@ public class Fox extends Animal{
                     action = true;
                 }
             }
+            else if (rand_num == 4) {
+                if (y - range < 0 || x + range >= world.GetWidth()) {
+                    rand_num = 5;
+                }
+                else {
+                    x += range;
+                    y -= range;
+                    action = true;
+                }
+            }
+            else if (rand_num == 5) {
+                if (y + range >= world.GetHeight() || x - range < 0) {
+                    rand_num = 1;
+                }
+                else {
+                    x -= range;
+                    y += range;
+                    action = true;
+                }
+            }
             if (world.GetPoint(x, y) != null && world.GetPoint(x,y).GetPower() > power){
                 action = false;
                 rand_num = random.nextInt(4);
@@ -75,9 +95,6 @@ public class Fox extends Animal{
         }
 
         if (world.GetPoint(x,y) != null){
-            //if (IsRunAway() == true){
-            //return;
-            //}
             Collision(world.GetPoint(x, y), x, y);
         }
         else {

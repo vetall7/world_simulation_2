@@ -9,21 +9,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Vector;
 
 public class HexWorld extends World{
-
     public HexWorld(int height, int width) {
         super(height, width);
+        CellNeighboursCounter = 6;
     }
 
     @Override
-    protected void drawSquare(Graphics g, int row, int col, int size) {
-        int x = col * size;
-        int y = row * size;
+    protected void drawSquare(Graphics g, int row, int col) {
+        int x = col * cellSize;
+        int y = row * cellSize;
 
-        int[] xPoints = {distance_x + x, distance_x + x, distance_x + x + size/2, distance_x + x + size, distance_x + x + size, distance_x + x + size/2};
-        int[] yPoints = {distance_y + y + 3 * size/4, distance_y + y + size/4,distance_y +  y, distance_y + y + size/4,distance_y +  y + size*3/4,distance_y + y + size};
-
+        int[] xPoints = {distance_x + x, distance_x + x, distance_x + x + cellSize/2, distance_x + x + cellSize, distance_x + x + cellSize, distance_x + x + cellSize/2};
+        int[] yPoints = {distance_y + y + 3 * cellSize/4, distance_y + y + cellSize/4,distance_y +  y, distance_y + y + cellSize/4,distance_y +  y + cellSize*3/4,distance_y + y + cellSize};
 
         if (GetPoint(col, row) instanceof Human) {
             g.setColor(Color.YELLOW);
@@ -43,7 +43,7 @@ public class HexWorld extends World{
 
         g.setColor(Color.WHITE);
         if (board[row][col] != null) {
-            g.drawString(new String(String.valueOf(board[row][col].GetSign())), distance_x + x + size / 2 - 5, distance_y + y + size / 2 + 5);
+            g.drawString(new String(String.valueOf(board[row][col].GetSign())), distance_x + x + cellSize / 2 - 5, distance_y + y + cellSize / 2 + 5);
         }
         g.setColor(Color.GRAY);
         g.drawPolygon(xPoints, yPoints, 6);
@@ -56,16 +56,15 @@ public class HexWorld extends World{
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                int cellSize = 50;
                 int boardWidth = width * cellSize + 15 + width*cellSize/2 ;
                 int boardHeight = height * cellSize + 350;
                 frame.setSize(boardWidth,boardHeight);
                 for (int row = 0; row < height; row++) {
                    for (int col = 0; col < width; col++) {
-                        drawSquare(g,  row, col, cellSize);
+                        drawSquare(g,  row, col);
                    }
                    distance_x+= cellSize/2;
-                   distance_y -= 15;
+                   distance_y -= cellSize/4;
                 }
                 distance_x = 0;
                 distance_y = 0;
@@ -95,14 +94,16 @@ public class HexWorld extends World{
                 g.drawString(new String("ENTER - SUPERPOWER "), 0, position + 115);
                 g.setColor(Color.RED);
                 g.drawString(new String("PRESS P TO SEE THE PROMPTS"), 0, position + 130);
-
             }
         };
         boardPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int row = e.getY() / 50;
-                int col = e.getX() / 50;
+                int row = (e.getY() / (cellSize - cellSize/4));
+                int col = (e.getX() - (row *  (cellSize/2))) / cellSize;
+                if (row >= height || row < 0 || col > width || col < 0){
+                    return;
+                }
                 Object point = GetPoint(col, row);
                 if (point instanceof Human) {
                     JOptionPane.showMessageDialog(frame, "You clicked on a human.");
@@ -145,7 +146,6 @@ public class HexWorld extends World{
             }
         });
 
-
         JList<String> list = new JList<>(comments);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollPane = new JScrollPane(list);
@@ -156,5 +156,34 @@ public class HexWorld extends World{
         frame.getContentPane().add(boardPanel);
         frame.pack();
         frame.setVisible(true);
+    }
+    @Override
+    public void FindPoints(Organism org, Vector<Integer> x, Vector<Integer> y){
+        int x_coo = org.GetX();
+        int y_coo = org.GetY();
+        if (y_coo-1 >= 0 && this.GetPoint(x_coo, y_coo-1) == null){
+            x.add(x_coo);
+            y.add(y_coo-1);
+        }
+        if (x_coo + 1 < this.GetWidth() && this.GetPoint(x_coo + 1, y_coo) == null){
+            x.add(x_coo + 1);
+            y.add(y_coo);
+        }
+        if (y_coo + 1 < this.GetHeight() && this.GetPoint(x_coo, y_coo +1 ) == null){
+            x.add(x_coo);
+            y.add(y_coo + 1);
+        }
+        if (x_coo - 1 >= 0 && this.GetPoint(x_coo-1, y_coo) == null){
+            x.add(x_coo - 1);
+            y.add(y_coo);
+        }
+        if (x_coo - 1 >= 0 && y_coo + 1 < this.GetHeight() && this.GetPoint(x_coo-1, y_coo+1) == null){
+            x.add(x_coo - 1);
+            y.add(y_coo + 1);
+        }
+        if (x_coo + 1 < this.GetWidth() && y_coo - 1 >= 0 && this.GetPoint(x_coo + 1, y_coo - 1) == null){
+            x.add(x_coo + 1);
+            y.add(y_coo - 1);
+        }
     }
 }

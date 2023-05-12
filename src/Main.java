@@ -39,9 +39,7 @@ public class Main {
         newGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
-                width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
-                generateWorld(frame);
+                ChooseWorld(frame);
             }
         });
 
@@ -70,6 +68,45 @@ public class Main {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
+    private static void ChooseWorld(JFrame frame){
+        frame.getContentPane().removeAll();
+
+        JButton simpleWorldButton = new JButton("Simple World");
+        simpleWorldButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
+                width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
+                generateWorld(frame);
+            }
+        });
+
+        JButton hexWorldButton = new JButton("Hex World");
+        hexWorldButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
+                width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
+                generateWorld(frame);
+            }
+        });
+
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(simpleWorldButton, BorderLayout.CENTER);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.add(hexWorldButton, BorderLayout.CENTER);
+
+        JPanel panel = (JPanel) frame.getContentPane().getComponent(0);
+        panel.add(topPanel, BorderLayout.NORTH);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
+
+        frame.revalidate();
+        frame.repaint();
+    }
+
     private static void generateWorld(JFrame frame) {
         World world = new HexWorld(height, width);
         WorldGenerator generator = new WorldGenerator(world);
@@ -83,19 +120,27 @@ public class Main {
                     world.Turn(world.TURN_NONE);
                     world.DrawWorld(frame, generator);
                 }
-                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                if (e.getKeyCode() == KeyEvent.VK_W) {
                     world.Turn(world.TURN_UP);
                     world.DrawWorld(frame, generator);
                 }
-                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                if (e.getKeyCode() == KeyEvent.VK_S) {
                     world.Turn(world.TURN_DOWN);
                     world.DrawWorld(frame, generator);
                 }
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                if (e.getKeyCode() == KeyEvent.VK_A) {
                     world.Turn(world.TURN_LEFT);
                     world.DrawWorld(frame, generator);
                 }
-                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                if (e.getKeyCode() == KeyEvent.VK_Q){
+                    world.Turn(world.TURN_UP_RIGHT);
+                    world.DrawWorld(frame, generator);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_E){
+                    world.Turn(world.TURN_DOWN_LEFT);
+                    world.DrawWorld(frame, generator);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_D) {
                     world.Turn(world.TURN_RIGHT);
                     world.DrawWorld(frame, generator);
                 }

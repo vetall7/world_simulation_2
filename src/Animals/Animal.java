@@ -19,7 +19,6 @@ public class Animal extends Organism {
         this.initiative = initiative;
         age = 0;
     }
-
     protected Animal(){}
 
     @Override
@@ -28,7 +27,7 @@ public class Animal extends Organism {
         x_priv = x;
         y_priv = y;
         Random random = new Random();
-        int rand_num = random.nextInt(4);
+        int rand_num = random.nextInt(world.GetCellNeighboursCounter());
         int x = this.x;
         int y = this.y;
         boolean action = false;
@@ -69,6 +68,26 @@ public class Animal extends Organism {
                     action = true;
                 }
             }
+            else if (rand_num == 4) {
+                if (y - range < 0 || x + range >= world.GetWidth()) {
+                    rand_num = 5;
+                }
+                else {
+                    x += range;
+                    y -= range;
+                    action = true;
+                }
+            }
+            else if (rand_num == 5) {
+                if (y + range >= world.GetHeight() || x - range < 0) {
+                    rand_num = 1;
+                }
+                else {
+                    x -= range;
+                    y += range;
+                    action = true;
+                }
+            }
         }
 
         if (world.GetPoint(x,y) != null){
@@ -88,7 +107,6 @@ public class Animal extends Organism {
             world.AddComments(this.GetName() + " moved from [" + x_priv + ";" + y_priv + "]" + " to [" + x + ";" + y + "]");
         }
     }
-
     @Override
     public void Collision(Organism victim, int x, int y){
         if (victim.GetAge() == 0){

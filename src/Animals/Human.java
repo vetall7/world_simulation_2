@@ -72,6 +72,14 @@ public class Human extends Animal{
         if (direction == world.TURN_RIGHT && this.x + 1 < world.GetWidth()){
             x_tmp++;
         }
+        if (direction == world.TURN_UP_RIGHT && this.x + 1 < world.GetWidth() && this.y - 1 >= 0){
+            x_tmp++;
+            y_tmp--;
+        }
+        if (direction == world.TURN_DOWN_LEFT && this.x - 1 >= 0 && this.y + 1 < world.GetHeight()){
+            x_tmp--;
+            y_tmp++;
+        }
         if (direction == world.TURN_SUPER){
             if (world.GetTurn() <= turn_counter + 10){
                 world.AddComments("SUPERPOWER CANNOT BE ACTIVATED");

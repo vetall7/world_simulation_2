@@ -21,12 +21,19 @@ public abstract class World {
     protected Vector<String> comments;
     protected Organism[][] board;
     protected Human human;
+    protected int CellNeighboursCounter = 0;
+    protected int cellSize = 50;
+    public int GetCellNeighboursCounter(){
+        return CellNeighboursCounter;
+    }
     public static final int TURN_NONE = 0;
     public static final int TURN_UP = 1;
     public static final int TURN_DOWN = 2;
     public static final int TURN_LEFT = 3;
     public static final int TURN_RIGHT = 4;
     public static final int TURN_SUPER = 5;
+    public static final int TURN_UP_RIGHT = 6;
+    public static final int TURN_DOWN_LEFT = 7;
     public int GetTurn(){
         return turn;
     }
@@ -76,7 +83,7 @@ public abstract class World {
         return board[y][x];
     }
 
-    protected abstract void drawSquare(Graphics g, int row, int col, int size);
+    protected abstract void drawSquare(Graphics g, int row, int col);
 
     public abstract void DrawWorld(JFrame frame, WorldGenerator generator);
 
@@ -107,26 +114,7 @@ public abstract class World {
         }
     }
 
-    public void FindPoints(Organism org, Vector<Integer> x, Vector<Integer> y){
-        int x_coo = org.GetX();
-        int y_coo = org.GetY();
-        if (y_coo-1 >= 0 && this.GetPoint(x_coo, y_coo-1) == null){
-            x.add(x_coo);
-            y.add(y_coo-1);
-        }
-        if (x_coo + 1 < this.GetWidth() && this.GetPoint(x_coo + 1, y_coo) == null){
-            x.add(x_coo + 1);
-            y.add(y_coo);
-        }
-        if (y_coo + 1 < this.GetHeight() && this.GetPoint(x_coo, y_coo +1 ) == null){
-            x.add(x_coo);
-            y.add(y_coo + 1);
-        }
-        if (x_coo - 1 >= 0 && this.GetPoint(x_coo-1, y_coo) == null){
-            x.add(x_coo - 1);
-            y.add(y_coo);
-        }
-    }
+    public abstract void FindPoints(Organism org, Vector<Integer> x, Vector<Integer> y);
 
     public void DeleteOrg(Organism org){
         organisms.removeElement(org);

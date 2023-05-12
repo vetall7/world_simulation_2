@@ -24,22 +24,22 @@ public class Antelope extends  Animal{
                     x = x-2;
                     world.SetPoint(y, x, this);
                 }
-                else if (x + 2 < world.GetWidth() && world.GetPoint(x+2, y) == null){
-                    world.SetPoint(y, x, null);
-                    x = x+2;
-                    world.SetPoint(y, x, this);
-                }
-                else if (y - 2 > 0 && world.GetPoint(x, y-2) == null){
-                    world.SetPoint(y, x, null);
-                    y = y-2;
-                    world.SetPoint(y, x, this);
-                }else if (y + 2 < world.GetHeight() && world.GetPoint(x, y+2) == null){
-                    world.SetPoint(y, x, null);
-                    y = y+2;
-                    world.SetPoint(y, x, this);
-                }
-                world.AddComments("Antelope ran away [" + x + ";" + y + "]");
-                return true;
+            else if (x + 2 < world.GetWidth() && world.GetPoint(x+2, y) == null){
+                world.SetPoint(y, x, null);
+                x = x+2;
+                world.SetPoint(y, x, this);
+            }
+            else if (y - 2 > 0 && world.GetPoint(x, y-2) == null){
+                world.SetPoint(y, x, null);
+                y = y-2;
+                world.SetPoint(y, x, this);
+            }else if (y + 2 < world.GetHeight() && world.GetPoint(x, y+2) == null){
+                world.SetPoint(y, x, null);
+                y = y+2;
+                world.SetPoint(y, x, this);
+            }
+            world.AddComments("Antelope ran away [" + x + ";" + y + "]");
+            return true;
         }
         return false;
     }
