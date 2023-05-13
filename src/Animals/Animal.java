@@ -8,7 +8,6 @@ import java.util.Random;
 import java.util.Vector;
 
 public class Animal extends Organism {
-
     protected Animal(int x, int y, World world, char sign, String name, int power, int initiative){
         this.x = x;
         this.y = y;

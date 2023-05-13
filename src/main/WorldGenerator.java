@@ -13,7 +13,7 @@ public class WorldGenerator {
     public WorldGenerator(World world){
         this.world = world;
     }
-    private void CoordinateGenerate(int x[], int y[], Vector<Integer> ocupied){
+    private void CoordinateGenerate(int x[], int y[], Vector<Integer> ocupied){ // generacja wolnych miejsz na plansze
         Random random = new Random();
         x[0] = random.nextInt(world.GetWidth());
         y[0] = random.nextInt(world.GetHeight());
@@ -46,11 +46,11 @@ public class WorldGenerator {
         world.SetHuman(human);
         human.SetDirection(world.TURN_NONE);
 
-        for (int i = 0; i < counter/20; i++){
+        for (int i = 0; i < counter/20; i++){  // w zaleznosci od rozmiaru pola generujemy poczatkowe organizmy
 
-            CoordinateGenerate(x, y, ocupied);
+            CoordinateGenerate(x, y, ocupied);  // generacja pustych miejsc
             Organism wolf = new Wolf(x[0], y[0], world);
-            world.AddOrganism(wolf);
+            world.AddOrganism(wolf);  // dodanie nowego organizmu do swiatu
 
             CoordinateGenerate(x, y, ocupied);
             Organism fox = new Fox(x[0], y[0], world);
@@ -110,7 +110,7 @@ public class WorldGenerator {
                 bw.write(Integer.toString(i.GetYpriv()) + " ");
                 bw.write(Integer.toString(i.GetAge()) + " ");
                 bw.write(Integer.toString(i.GetPower()) + " ");
-                if (i instanceof Human){
+                if (i instanceof Human){ // jezeli organizmem jest czlowiek to zapisujemy dodatkowa informacje
                     if (((Human) i).GetSuperPower()) {
                         bw.write(Integer.toString(1) + " ");
                     }
@@ -137,7 +137,7 @@ public class WorldGenerator {
             height = Integer.parseInt(scanner.next());
             width = Integer.parseInt(scanner.next());
             turn = Integer.parseInt(scanner.next());
-            if (neighbours_counter == 4){
+            if (neighbours_counter == 4){  // tworzenie swiatu
                 world = new SimpleWorld(height, width);
             }else {
                 world = new HexWorld(height, width);
@@ -161,7 +161,7 @@ public class WorldGenerator {
                 if (new_org == null){
                     continue;
                 }
-                if (new_org instanceof Human){
+                if (new_org instanceof Human){ // jezeli organizmem jest czlowiek to wczytujemy dodatkowa informacje
                     is_super = Integer.parseInt(scanner.next());
                     if (is_super == 0){
                         ((Human) new_org).SetSuperPower(false);
@@ -172,6 +172,7 @@ public class WorldGenerator {
                     ((Human) new_org).SetTurn(super_turn);
                     world.SetHuman(((Human) new_org));
                 }
+                // ustalamy wszystkie wczytane wartosci dla organizmu
                 new_org.SetAge(age);
                 new_org.SetXpriv(x_p);
                 new_org.SetYpriv(y_p);
@@ -183,7 +184,7 @@ public class WorldGenerator {
         }
     }
 
-    public Organism ReadOrganism(String name, int x, int y) {
+    public Organism ReadOrganism(String name, int x, int y) { // sprawdzanie kim jest wczytany organizm i tworzenie nowego
         Organism temp_org = null;
         if (name.equals("Wolf")) {
             temp_org = new Wolf(x, y, world);

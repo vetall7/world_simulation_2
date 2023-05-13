@@ -8,7 +8,7 @@ public class Belladonna extends Plant{
     @Override
     public void Collision(Organism attacker, int x, int y){
         world.AddComments(this.GetName() + " killed " + attacker.GetName());
-        world.SetPoint(x, y, null);
-        world.DeleteOrg(attacker);
+        world.SetPoint(x, y, null); // zwierze ktore zjadlo umiera  (ustalenia zajmowanego wczesniej pola jako puste)
+        world.DeleteOrg(attacker); // usuniecie organizmy ze swiatu
     }
 }

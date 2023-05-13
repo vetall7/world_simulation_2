@@ -26,7 +26,7 @@ public class Plant extends Organism {
     @Override
     public void Action(int range) {
         Random random = new Random();
-        int random_number = random.nextInt(20);
+        int random_number = random.nextInt(20); // szansa pojawienia nowego organizmu = 1/20
         if (random_number == 0){
             Organism new_plant = NewPlant();
             if (new_plant != null){
@@ -35,7 +35,7 @@ public class Plant extends Organism {
         }
     }
 
-    private Organism NewPlant(){
+    private Organism NewPlant(){ // tworzenie nowej rosliny
         Vector<Integer> x = new Vector<>();
         Vector<Integer> y = new Vector<>();
         world.FindPoints(this, x, y);
@@ -46,7 +46,7 @@ public class Plant extends Organism {
         int point = random.nextInt(x.size());
         int x_temp = x.get(point);
         int y_temp = y.get(point);
-
+        // sprawdzanie jakiego gatunku jest roslina i tworzenie takiej samej
         if (this instanceof Grass){
             Grass w = new Grass(x_temp, y_temp, world);
             world.AddComments("Grass was born");

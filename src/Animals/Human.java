@@ -40,13 +40,13 @@ public class Human extends Animal{
         Vector<Integer> x_points = new Vector<>();
         Vector<Integer> y_points = new Vector<>();
         world.SetPoint(attacker.GetY(), attacker.GetX(), null);
-        world.FindPoints(this, x_points, y_points);
+        world.FindPoints(this, x_points, y_points); // generowania miejsca dla zwierza ktory zostal odstraszony
         if (x_points.size() ==0 ){
             return false;
         }
         Random random = new Random();
         int rand = random.nextInt(x_points.size());
-        attacker.SetX(x_points.get(rand));
+        attacker.SetX(x_points.get(rand)); // przemieszczenie na dowolne puste pole
         attacker.SetY(y_points.get(rand));
         world.SetPoint(attacker.GetY(), attacker.GetX(), attacker);
         world.AddComments("Human scared away " + attacker.GetName());
@@ -60,6 +60,7 @@ public class Human extends Animal{
         int y_tmp = this.y;
         x_priv = x;
         y_priv = y;
+        // Sprawdzanie w ktora strone idzie czlowiek
         if (direction == world.TURN_DOWN && this.y + 1 < world.GetHeight()){
             y_tmp++;
         }
@@ -81,17 +82,17 @@ public class Human extends Animal{
             y_tmp++;
         }
         if (direction == world.TURN_SUPER){
-            if (world.GetTurn() <= turn_counter + 10){
+            if (world.GetTurn() <= turn_counter + 10){ // Sprawdzanie czy od ostatnie aktuwacji specjalnej umijetnosci juz minelo 10 tur
                 world.AddComments("SUPERPOWER CANNOT BE ACTIVATED");
             }
-            else {
+            else { // aktywacja umijetnosci
                 turn_counter = world.GetTurn();
                 world.AddComments("ACTIVATED SUPERPOWER");
                 isSuperPower = true;
             }
         }
         if (isSuperPower){
-            if (world.GetTurn() == turn_counter + 5){
+            if (world.GetTurn() == turn_counter + 5){   // sprawdzanie czy od aktywacji umijetnosci juz minelo 5 tur, jezeli tak, to dyzaktywujemy
                 isSuperPower = false;
                 world.AddComments("SUPERPOWER DEACTIVATED");
             }

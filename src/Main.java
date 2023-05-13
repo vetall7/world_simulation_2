@@ -34,9 +34,9 @@ public class Main {
         label.setForeground(Color.BLUE);
         label.setHorizontalAlignment(JLabel.CENTER); // Center-align the label
         panel.add(label, BorderLayout.CENTER);
-
+        // na samym początku gry użytkownik ma do wyboru rozpocząć nową grę lub kontynuować grę wczytanej z pliku
         JButton newGameButton = new JButton("New Game");
-        newGameButton.addActionListener(new ActionListener() {
+        newGameButton.addActionListener(new ActionListener() { // sluchacz zdarzeń na przycisku
             @Override
             public void actionPerformed(ActionEvent e) {
                 ChooseWorld(frame);
@@ -44,7 +44,7 @@ public class Main {
         });
 
         JButton loadGameButton = new JButton("Load Game");
-        loadGameButton.addActionListener(new ActionListener() {
+        loadGameButton.addActionListener(new ActionListener() { // sluchacz zdarzeń na przycisku
             @Override
             public void actionPerformed(ActionEvent e) {
                 ReadGame(frame);
@@ -69,8 +69,9 @@ public class Main {
         frame.setLocationRelativeTo(null);
     }
     private static void ChooseWorld(JFrame frame){
-        // Создаем пользовательскую панель содержимого с кнопками
+        // tworzenie paneli z przyciskami
         JPanel buttonPanel = new JPanel();
+        // uzytkownik ma do wybory zwyklą planszę (kwadratową) lub planszę sześcienną
         JButton simpleWorld = new JButton("Simple World ");
         JButton hexWorld = new JButton("Hex World ");
         buttonPanel.add(simpleWorld);
@@ -78,9 +79,9 @@ public class Main {
         JOptionPane optionPane = new JOptionPane(buttonPanel, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION);
         optionPane.setOptions(new Object[]{simpleWorld, hexWorld});
         optionPane.setInitialValue(simpleWorld);
-        // Создаем диалоговое окно и ожидаем выбора
+        // twórzymy okno dialogowe i czekamy na wybór
         javax.swing.JDialog dialog = optionPane.createDialog(null, "Choose the world");
-        // Создаем слушатели событий для кнопок
+        // sluchacze zdarzeń na przyciskach
         ActionListener yesListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
@@ -101,13 +102,12 @@ public class Main {
             }
         };
 
-        // Добавляем слушатели событий к кнопкам
+        // dodanie sluchacze
         simpleWorld.addActionListener(yesListener);
         hexWorld.addActionListener(noListener);
-        // Отображаем диалоговое окно с пользовательской панелью содержимого
         dialog.setVisible(true);
     }
-    private static void generateWorld(JFrame frame) {
+    private static void generateWorld(JFrame frame) { // jeżeli użytkownik wybral nową grę, to generujemy swiat
         WorldGenerator generator = new WorldGenerator(world);
         generator.Generate();
         world.DrawWorld(frame, generator);
@@ -120,7 +120,7 @@ public class Main {
         });
     }
 
-    private static void ReadGame(JFrame frame){
+    private static void ReadGame(JFrame frame){ // wczytujemy gre
         WorldGenerator generator = new WorldGenerator();
         generator.ReadGame();
         world = generator.GetWorld();
@@ -133,7 +133,7 @@ public class Main {
             }
         });
     }
-    private static void ReadKey(KeyEvent e, JFrame frame, WorldGenerator generator){
+    private static void ReadKey(KeyEvent e, JFrame frame, WorldGenerator generator){ // który przycisk został wciśnięty
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             world.Turn(world.TURN_NONE);
             world.DrawWorld(frame, generator);

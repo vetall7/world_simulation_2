@@ -14,8 +14,8 @@ public class SosmowskiHogweed extends Plant{
     @Override
     public void Collision(Organism attacker, int x , int y){
         world.AddComments(this.GetName() + " killed " + attacker.GetName());
-        world.SetPoint(x, y, null);
-        world.DeleteOrg(attacker);
+        world.SetPoint(x, y, null); // zwierze ktore zjadlo umiera  (ustalenia zajmowanego wczesniej pola jako puste)
+        world.DeleteOrg(attacker); // usuniecie organizmy ze swiatu
     }
 
     @Override
@@ -27,9 +27,10 @@ public class SosmowskiHogweed extends Plant{
             return;
         }
         for (int i = 0; i < x_coo.size(); i++){
+            // sprawdzanie czy obok znajduje sie organizm i czy jest on zwierze
             if (world.GetPoint(x_coo.get(i), y_coo.get(i)) != null && world.GetPoint(x_coo.get(i), y_coo.get(i)) instanceof Animal){
                 world.AddComments("SosmowskiHogweed killed " +  world.GetPoint(x_coo.get(i), y_coo.get(i)).GetName());
-                world.DeleteOrg(world.GetPoint(x_coo.get(i), y_coo.get(i)));
+                world.DeleteOrg(world.GetPoint(x_coo.get(i), y_coo.get(i))); // usuwanie tego organizmu ze swiatu
                 world.SetPoint(y_coo.get(i), x_coo.get(i), null);
             }
         }

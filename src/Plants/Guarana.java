@@ -7,6 +7,6 @@ public class Guarana extends Plant{
     }
     @Override
     public void Collision(Organism attacker, int x, int y) {
-        attacker.PowerIncrease(3);
+        attacker.PowerIncrease(3); // zwierze ktore zjadlo zwieksza sile o 3
     }
 }

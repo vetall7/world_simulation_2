@@ -28,6 +28,7 @@ public class Fox extends Animal{
                 counter++;
             }
         }
+        // jezeli wszystkie organizmy sasiadujece sa silniejsze to lis stoi na miejscu
         if (counter >= 4){
             return;
         }

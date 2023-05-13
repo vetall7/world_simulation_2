@@ -21,10 +21,10 @@ public class HexWorld extends World{
     protected void drawSquare(Graphics g, int row, int col) {
         int x = col * cellSize;
         int y = row * cellSize;
-
+        // koordynaty wszystkich wierzchołków szściokąta
         int[] xPoints = {distance_x + x, distance_x + x, distance_x + x + cellSize/2, distance_x + x + cellSize, distance_x + x + cellSize, distance_x + x + cellSize/2};
         int[] yPoints = {distance_y + y + 3 * cellSize/4, distance_y + y + cellSize/4,distance_y +  y, distance_y + y + cellSize/4,distance_y +  y + cellSize*3/4,distance_y + y + cellSize};
-
+        // w zależności od tego, jaki jest organizm zmieniamy kolor pola
         if (GetPoint(col, row) instanceof Human) {
             g.setColor(Color.YELLOW);
         } else if (GetPoint(col, row) instanceof Plant) {
@@ -42,11 +42,11 @@ public class HexWorld extends World{
         g.fillPolygon(xPoints, yPoints, 6);
 
         g.setColor(Color.WHITE);
-        if (board[row][col] != null) {
+        if (board[row][col] != null) { // wypisujemy znak każdego organizmu
             g.drawString(new String(String.valueOf(board[row][col].GetSign())), distance_x + x + cellSize / 2 - 5, distance_y + y + cellSize / 2 + 5);
         }
         g.setColor(Color.GRAY);
-        g.drawPolygon(xPoints, yPoints, 6);
+        g.drawPolygon(xPoints, yPoints, 6); // rysujemy pole
     }
     private int distance_x = 0;
     private int distance_y = 0;
@@ -63,7 +63,7 @@ public class HexWorld extends World{
                    for (int col = 0; col < width; col++) {
                         drawSquare(g,  row, col);
                    }
-                   distance_x+= cellSize/2;
+                   distance_x+= cellSize/2;  // w Hex implementacji każda linia ma być zmiszczona o polowe rozmiaru zeby z każdej krawędzi wychodzil nowy sześciokąt
                    distance_y -= cellSize/4;
                 }
                 distance_x = 0;
@@ -98,9 +98,9 @@ public class HexWorld extends World{
         };
         boardPanel.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e) { // sluchacz zdarzen zeby zrozumieć na ktore pole nacisnąl użytkownik
                 int row = (e.getY() / (cellSize - cellSize/4));
-                int col = (e.getX() - (row *  (cellSize/2))) / cellSize;
+                int col = (e.getX() - (row *  (cellSize/2))) / cellSize; // wyliczanie gdzie sie znajduje organizm w tablice
                 if (row >= height || row < 0 || col > width || col < 0){
                     return;
                 }
@@ -112,7 +112,7 @@ public class HexWorld extends World{
                 } else if (point instanceof Animal) {
                     JOptionPane.showMessageDialog(frame, "You clicked on an animal.");
                 }
-                else {
+                else {  // wybór organizmu
                     String options[] = {
                             "Antelope",
                             "Fox",
@@ -158,7 +158,7 @@ public class HexWorld extends World{
         frame.setVisible(true);
     }
     @Override
-    public void FindPoints(Organism org, Vector<Integer> x, Vector<Integer> y){
+    public void FindPoints(Organism org, Vector<Integer> x, Vector<Integer> y){ // szukanie wszyskich pustych sąsiadujących pól
         int x_coo = org.GetX();
         int y_coo = org.GetY();
         if (y_coo-1 >= 0 && this.GetPoint(x_coo, y_coo-1) == null){
@@ -188,7 +188,7 @@ public class HexWorld extends World{
     }
 
     @Override
-    public void FindNeighbours(Organism org, Vector<Integer> x, Vector<Integer> y){
+    public void FindNeighbours(Organism org, Vector<Integer> x, Vector<Integer> y){// szukanie wszyskich sąsiadujących zwierząt
         for (int i = -1; i <= 1; i++){
             for (int j = -1; j <= 1; j++){
                 if (i == 0 && j == 0 || i == -1 && j == -1 || i == 1 && j == 1){

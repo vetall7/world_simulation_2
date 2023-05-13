@@ -21,12 +21,12 @@ public abstract class World {
     protected Vector<String> comments;
     protected Organism[][] board;
     protected Human human;
-    protected int CellNeighboursCounter = 0;
+    protected int CellNeighboursCounter = 0; // maksymalna ilość sąsiadujących pól dla każdego świata
     protected int cellSize = 50;
     public int GetCellNeighboursCounter(){
         return CellNeighboursCounter;
     }
-    public static final int TURN_NONE = 0;
+    public static final int TURN_NONE = 0; // wszyskie kierunki ruchu czlowieka
     public static final int TURN_UP = 1;
     public static final int TURN_DOWN = 2;
     public static final int TURN_LEFT = 3;
@@ -88,15 +88,15 @@ public abstract class World {
     public abstract void DrawWorld(JFrame frame, WorldGenerator generator);
 
     public void Turn(int direction ){
-        turn++;
-        if (human != null) {human.SetDirection(direction);}
+        turn++;  // zwiekszamy licznik tury
+        if (human != null) {human.SetDirection(direction);} // w ktora strone idzie czlowiek
         comments.clear();
         for (int i = 0; i < organisms.size(); i++){
             if (organisms.get(i).GetAge() == 0){
-                organisms.get(i).SetAge(1);
+                organisms.get(i).SetAge(1); // organizmy ktore dopiero sie urodzily juz przezyli jedna ture
             }
         }
-        Collections.sort(organisms, new Comparator<Organism>() {
+        Collections.sort(organisms, new Comparator<Organism>() { // sortujemy organizmy wedlug inicjatywy lub wieku
             @Override
             public int compare(Organism o1, Organism o2) {
                 if (o1.GetInitiative() != o2.GetInitiative()) {
@@ -107,8 +107,8 @@ public abstract class World {
             }
         });
 
-        for (int i = 0; i < organisms.size(); i++){
-            if (organisms.get(i).GetAge() != 0) {
+        for (int i = 0; i < organisms.size(); i++){ // dla kazdego organizmu wywolujemy metode Akcja
+            if (organisms.get(i).GetAge() != 0) {  // organizm ktory dopiero sie urodzil nie sie przemieszcza
                 organisms.get(i).Action(1);
             }
         }
