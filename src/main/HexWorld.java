@@ -83,7 +83,7 @@ public class HexWorld extends World{
                 g.setColor(Color.BLUE);
                 g.drawString(new String("Blue   - ANIMALS "), 0, position + 60 );
                 g.setColor(Color.BLACK);
-                g.drawString(new String("PRESS S TO SAVE THE GAME "), 0, position + 85 );
+                g.drawString(new String("PRESS X TO SAVE THE GAME "), 0, position + 85 );
                 g.drawString(new String("ARROWS - HUMAN MOVEMENT "), 0, position + 100 );
                 if (human != null && human.GetSuperPower()){
                     g.setColor(Color.RED);
@@ -184,6 +184,22 @@ public class HexWorld extends World{
         if (x_coo + 1 < this.GetWidth() && y_coo - 1 >= 0 && this.GetPoint(x_coo + 1, y_coo - 1) == null){
             x.add(x_coo + 1);
             y.add(y_coo - 1);
+        }
+    }
+
+    @Override
+    public void FindNeighbours(Organism org, Vector<Integer> x, Vector<Integer> y){
+        for (int i = -1; i <= 1; i++){
+            for (int j = -1; j <= 1; j++){
+                if (i == 0 && j == 0 || i == -1 && j == -1 || i == 1 && j == 1){
+                    continue;
+                }
+                if (org.GetY() + i >= 0 && org.GetY() + i < GetHeight() && org.GetX() + j >= 0 &&org.GetX() +j < GetWidth()
+                        &&GetPoint(org.GetX() + j, org.GetY() + i) != null && GetPoint(org.GetX() + j, org.GetY() + i) instanceof Animal){
+                    x.add(org.GetX() + j);
+                    y.add(org.GetY() + i);
+                }
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Main {
     private static int width;
     private static int height;
-
+    private static World world;
     public static void main(String[] args) {
         showInputDialog();
     }
@@ -69,46 +69,45 @@ public class Main {
         frame.setLocationRelativeTo(null);
     }
     private static void ChooseWorld(JFrame frame){
-        frame.getContentPane().removeAll();
-
-        JButton simpleWorldButton = new JButton("Simple World");
-        simpleWorldButton.addActionListener(new ActionListener() {
-            @Override
+        // Создаем пользовательскую панель содержимого с кнопками
+        JPanel buttonPanel = new JPanel();
+        JButton simpleWorld = new JButton("Simple World ");
+        JButton hexWorld = new JButton("Hex World ");
+        buttonPanel.add(simpleWorld);
+        buttonPanel.add(hexWorld);
+        JOptionPane optionPane = new JOptionPane(buttonPanel, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        optionPane.setOptions(new Object[]{simpleWorld, hexWorld});
+        optionPane.setInitialValue(simpleWorld);
+        // Создаем диалоговое окно и ожидаем выбора
+        javax.swing.JDialog dialog = optionPane.createDialog(null, "Choose the world");
+        // Создаем слушатели событий для кнопок
+        ActionListener yesListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
                 width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
+                world = new SimpleWorld(height, width);
                 generateWorld(frame);
+                dialog.dispose();
             }
-        });
+        };
 
-        JButton hexWorldButton = new JButton("Hex World");
-        hexWorldButton.addActionListener(new ActionListener() {
-            @Override
+        ActionListener noListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
                 width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
+                world = new HexWorld(height, width);
                 generateWorld(frame);
+                dialog.dispose();
             }
-        });
+        };
 
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new BorderLayout());
-        topPanel.add(simpleWorldButton, BorderLayout.CENTER);
-
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BorderLayout());
-        bottomPanel.add(hexWorldButton, BorderLayout.CENTER);
-
-        JPanel panel = (JPanel) frame.getContentPane().getComponent(0);
-        panel.add(topPanel, BorderLayout.NORTH);
-        panel.add(bottomPanel, BorderLayout.SOUTH);
-
-        frame.revalidate();
-        frame.repaint();
+        // Добавляем слушатели событий к кнопкам
+        simpleWorld.addActionListener(yesListener);
+        hexWorld.addActionListener(noListener);
+        // Отображаем диалоговое окно с пользовательской панелью содержимого
+        dialog.setVisible(true);
     }
-
     private static void generateWorld(JFrame frame) {
-        World world = new HexWorld(height, width);
         WorldGenerator generator = new WorldGenerator(world);
         generator.Generate();
         world.DrawWorld(frame, generator);
@@ -116,44 +115,7 @@ public class Main {
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    world.Turn(world.TURN_NONE);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_W) {
-                    world.Turn(world.TURN_UP);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_S) {
-                    world.Turn(world.TURN_DOWN);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_A) {
-                    world.Turn(world.TURN_LEFT);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_Q){
-                    world.Turn(world.TURN_UP_RIGHT);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_E){
-                    world.Turn(world.TURN_DOWN_LEFT);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_D) {
-                    world.Turn(world.TURN_RIGHT);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    world.Turn(world.TURN_SUPER);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_S) {
-                    generator.SaveGame();
-                }
-                if (e.getKeyCode() == KeyEvent.VK_P) {
-                    JOptionPane.showMessageDialog(frame, "a - Antelope\nf - Fox\ns - Sheep\nt - Turtle\nw - Wolf\nb - Belladonna\nd - Dandelion\nG - Grass\ng - Guarana\nh - SosmowskiHogweed");
-                }
+                ReadKey(e, frame, generator);
             }
         });
     }
@@ -161,43 +123,54 @@ public class Main {
     private static void ReadGame(JFrame frame){
         WorldGenerator generator = new WorldGenerator();
         generator.ReadGame();
-        World world = generator.GetWorld();
+        world = generator.GetWorld();
         world.DrawWorld(frame, generator);
         frame.requestFocusInWindow();
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    world.Turn(world.TURN_NONE);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    world.Turn(world.TURN_UP);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    world.Turn(world.TURN_DOWN);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    world.Turn(world.TURN_LEFT);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    world.Turn(world.TURN_RIGHT);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    world.Turn(world.TURN_SUPER);
-                    world.DrawWorld(frame, generator);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_S) {
-                    generator.SaveGame();
-                }
-                if (e.getKeyCode() == KeyEvent.VK_P) {
-                    JOptionPane.showMessageDialog(frame, "a - Antelope\nf - Fox\ns - Sheep\nt - Turtle\nw - Wolf\nb - Belladonna\nd - Dandelion\nG - Grass\ng - Guarana\nh - SosmowskiHogweed");
-                }
+                ReadKey(e, frame, generator);
             }
         });
+    }
+    private static void ReadKey(KeyEvent e, JFrame frame, WorldGenerator generator){
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            world.Turn(world.TURN_NONE);
+            world.DrawWorld(frame, generator);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            world.Turn(world.TURN_UP);
+            world.DrawWorld(frame, generator);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            world.Turn(world.TURN_DOWN);
+            world.DrawWorld(frame, generator);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            world.Turn(world.TURN_LEFT);
+            world.DrawWorld(frame, generator);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_Q){
+            world.Turn(world.TURN_UP_RIGHT);
+            world.DrawWorld(frame, generator);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_E){
+            world.Turn(world.TURN_DOWN_LEFT);
+            world.DrawWorld(frame, generator);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_D) {
+            world.Turn(world.TURN_RIGHT);
+            world.DrawWorld(frame, generator);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            world.Turn(world.TURN_SUPER);
+            world.DrawWorld(frame, generator);
+        }
+        if (e.getKeyCode() == KeyEvent.VK_X) {
+            generator.SaveGame();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            JOptionPane.showMessageDialog(frame, "a - Antelope\nf - Fox\ns - Sheep\nt - Turtle\nw - Wolf\nb - Belladonna\nd - Dandelion\nG - Grass\ng - Guarana\nh - SosmowskiHogweed");
+        }
     }
 }

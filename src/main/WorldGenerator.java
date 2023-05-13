@@ -97,6 +97,7 @@ public class WorldGenerator {
             File file = new File(filename);
             FileWriter fw = new FileWriter(filename, false);
             BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(world.GetCellNeighboursCounter() + " ");
             bw.write(Integer.toString(world.GetOrgCounter()) + " ");
             bw.write(Integer.toString(world.GetHeight()) + " ");
             bw.write(Integer.toString(world.GetWidth()) + " ");
@@ -129,14 +130,18 @@ public class WorldGenerator {
 
     public void ReadGame(){
         String fileName = "game.txt";
-
         try (Scanner scanner = new Scanner(new File(fileName))) {
-            int counter_org, height, width, turn;
+            int counter_org, height, width, turn, neighbours_counter;
+            neighbours_counter = Integer.parseInt(scanner.next());
             counter_org = Integer.parseInt(scanner.next());
             height = Integer.parseInt(scanner.next());
             width = Integer.parseInt(scanner.next());
             turn = Integer.parseInt(scanner.next());
-            world = new SimpleWorld(height, width);
+            if (neighbours_counter == 4){
+                world = new SimpleWorld(height, width);
+            }else {
+                world = new HexWorld(height, width);
+            }
             world.SetTurn(turn);
             int x_tmp, y_tmp, x_p, y_p, age, power, super_turn;
             int is_super;

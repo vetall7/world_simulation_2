@@ -115,7 +115,7 @@ public abstract class World {
     }
 
     public abstract void FindPoints(Organism org, Vector<Integer> x, Vector<Integer> y);
-
+    public abstract void FindNeighbours(Organism org, Vector<Integer> x, Vector<Integer> y);
     public void DeleteOrg(Organism org){
         organisms.removeElement(org);
     }
