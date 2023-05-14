@@ -11,9 +11,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Scanner;
 public class Main {
-    private static int width;
-    private static int height;
-    private static World world;
     public static void main(String[] args) {
         showInputDialog();
     }
@@ -25,6 +22,7 @@ public class Main {
         frame.requestFocusInWindow();
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
+        // mowi nam o tym jak będą się mieścili elementy w oknie (w danym przypadku są 5 sposobów  NORTH, SOUTH, EAST, WEST, CENTER)
         panel.setLayout(new BorderLayout());
         UIManager.put("Button.background", Color.BLACK);
         UIManager.put("Button.foreground", Color.WHITE);
@@ -51,7 +49,7 @@ public class Main {
             }
         });
 
-// Create two smaller panels and add each button to one of them
+// tworzenie dwóch małych paneli i dodawanie przycisków
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BorderLayout());
         topPanel.add(newGameButton, BorderLayout.CENTER);
@@ -60,7 +58,7 @@ public class Main {
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.add(loadGameButton, BorderLayout.CENTER);
 
-// Add the two smaller panels to the main panel, positioning them at the top and bottom respectively
+// Dodaj dwa mniejsze paneli do panelu głównego, umieszczając je odpowiednio na górze i na dole.
         panel.add(topPanel, BorderLayout.NORTH);
         panel.add(bottomPanel, BorderLayout.SOUTH);
 
@@ -82,32 +80,32 @@ public class Main {
         // twórzymy okno dialogowe i czekamy na wybór
         javax.swing.JDialog dialog = optionPane.createDialog(null, "Choose the world");
         // sluchacze zdarzeń na przyciskach
-        ActionListener yesListener = new ActionListener() {
+        ActionListener simple = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
-                width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
-                world = new SimpleWorld(height, width);
-                generateWorld(frame);
+                int height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
+                int width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
+                World world = new SimpleWorld(height, width);
+                generateWorld(frame, world);
                 dialog.dispose();
             }
         };
 
-        ActionListener noListener = new ActionListener() {
+        ActionListener hex = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
-                width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
-                world = new HexWorld(height, width);
-                generateWorld(frame);
+                int height = Integer.parseInt(JOptionPane.showInputDialog("Enter height: "));
+                int width = Integer.parseInt(JOptionPane.showInputDialog("Enter width: "));
+                World world = new HexWorld(height, width);
+                generateWorld(frame, world);
                 dialog.dispose();
             }
         };
 
         // dodanie sluchacze
-        simpleWorld.addActionListener(yesListener);
-        hexWorld.addActionListener(noListener);
+        simpleWorld.addActionListener(simple);
+        hexWorld.addActionListener(hex);
         dialog.setVisible(true);
     }
-    private static void generateWorld(JFrame frame) { // jeżeli użytkownik wybral nową grę, to generujemy swiat
+    private static void generateWorld(JFrame frame, World world) { // jeżeli użytkownik wybral nową grę, to generujemy swiat
         WorldGenerator generator = new WorldGenerator(world);
         generator.Generate();
         world.DrawWorld(frame, generator);
@@ -115,7 +113,7 @@ public class Main {
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                ReadKey(e, frame, generator);
+                ReadKey(e, frame, generator, world);
             }
         });
     }
@@ -123,17 +121,16 @@ public class Main {
     private static void ReadGame(JFrame frame){ // wczytujemy gre
         WorldGenerator generator = new WorldGenerator();
         generator.ReadGame();
-        world = generator.GetWorld();
-        world.DrawWorld(frame, generator);
+        generator.GetWorld().DrawWorld(frame, generator);
         frame.requestFocusInWindow();
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                ReadKey(e, frame, generator);
+                ReadKey(e, frame, generator, generator.GetWorld());
             }
         });
     }
-    private static void ReadKey(KeyEvent e, JFrame frame, WorldGenerator generator){ // który przycisk został wciśnięty
+    private static void ReadKey(KeyEvent e, JFrame frame, WorldGenerator generator, World world){ // który przycisk został wciśnięty
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             world.Turn(world.TURN_NONE);
             world.DrawWorld(frame, generator);

@@ -21,7 +21,7 @@ public class HexWorld extends World{
     protected void drawSquare(Graphics g, int row, int col) {
         int x = col * cellSize;
         int y = row * cellSize;
-        // koordynaty wszystkich wierzchołków szściokąta
+        // koordynaty wszystkich wierzchołków sześciokąta
         int[] xPoints = {distance_x + x, distance_x + x, distance_x + x + cellSize/2, distance_x + x + cellSize, distance_x + x + cellSize, distance_x + x + cellSize/2};
         int[] yPoints = {distance_y + y + 3 * cellSize/4, distance_y + y + cellSize/4,distance_y +  y, distance_y + y + cellSize/4,distance_y +  y + cellSize*3/4,distance_y + y + cellSize};
         // w zależności od tego, jaki jest organizm zmieniamy kolor pola
@@ -73,7 +73,7 @@ public class HexWorld extends World{
                 Font font = g.getFont().deriveFont(15f);
                 Font font2 = g.getFont().deriveFont(18f);
                 g.setFont(font2);
-                int position = height*52;
+                int position = height*cellSize;
                 g.drawString(new String("Organisms counter: " + organisms.size() + "     Turn counter: " + turn), 0, position );
                 g.setColor(Color.RED);
                 g.setFont(font);
