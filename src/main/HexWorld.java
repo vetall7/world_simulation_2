@@ -195,7 +195,7 @@ public class HexWorld extends World{
                     continue;
                 }
                 if (org.GetY() + i >= 0 && org.GetY() + i < GetHeight() && org.GetX() + j >= 0 &&org.GetX() +j < GetWidth()
-                        &&GetPoint(org.GetX() + j, org.GetY() + i) != null && GetPoint(org.GetX() + j, org.GetY() + i) instanceof Animal){
+                        && GetPoint(org.GetX() + j, org.GetY() + i) != null && GetPoint(org.GetX() + j, org.GetY() + i) instanceof Animal){
                     x.add(org.GetX() + j);
                     y.add(org.GetY() + i);
                 }

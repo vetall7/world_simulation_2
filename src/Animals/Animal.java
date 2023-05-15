@@ -93,7 +93,7 @@ public class Animal extends Organism {
             if (world.GetPoint(x, y).TarczeAlzura(this)){  // trzeba zeby zwierze zaatakowalo czlowieka
                 return;
             }
-            if (IsRunAway() == true){
+            if (IsRunAway()){
               return;
             }
             Collision(world.GetPoint(x, y), x, y);
