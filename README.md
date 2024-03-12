@@ -7,10 +7,9 @@ The simulator will operate in turns. In each turn, all organisms existing in the
 
 ## Implementation Notes
 
-- The world grid should be represented as a two-dimensional array.
 - Turn-based logic is implemented to handle the actions of organisms in each turn.
 - The human's movement is determined by keyboard input, and special ability activation should be handled by a separate button.
-- The program interface should visual feedback on the events happening in the world.
+- The program interface visual feedbacks on the events happening in the world.
 
 ## Example
 
